@@ -83,7 +83,13 @@ end
 # 				otherwise render json with msg set to "update failure"
 # hint: Todo class has instance method update_attribute
 put '/todos/:id' do
-  ### TU CODIGO AQUI ###
+  content_type :json
+  todo = Todo.find(params[:id])
+  if todo.update_attribute(:description, params[:description])
+    return {msg: "update success"}.to_json
+  else
+    return {msg: todo.errors}.to_json
+  end
 end
 
 # delete a todo
@@ -91,5 +97,12 @@ end
 # 				otherwise render json with msg set to "delete failure"
 # hint: Todo class has instance method destroy
 delete '/todos/:id' do
-  ### TU CODIGO AQUI ###
+  content_type :json
+  todo = Todo.find(params[:id])
+  if todo
+    todo.destroy
+    return {msg: "delete success"}.to_json
+  else
+    return {msg: "delete failure"}.to_json
+  end
 end
